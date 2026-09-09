@@ -1,0 +1,33 @@
+name: ledgerly
+
+services:
+  ledgerly:
+    image: ledgerly:${LEDGERLY_IMAGE_TAG:-local}
+    build:
+      context: .
+      args:
+        NODE_BASE_IMAGE: ${NODE_BASE_IMAGE:-node:22-alpine}
+        PYTHON_BASE_IMAGE: ${PYTHON_BASE_IMAGE:-python:3.12-slim}
+    ports:
+      - "${LEDGERLY_BIND_HOST:-127.0.0.1}:${LEDGERLY_PORT:-10670}:8000"
+    environment:
+      STUDIO_DATA_DIR: /app/data
+      STUDIO_WEB_DIR: /app/web
+      STUDIO_PUBLIC_ORIGIN: ${STUDIO_PUBLIC_ORIGIN:-}
+      STUDIO_COOKIE_SECURE: ${STUDIO_COOKIE_SECURE:-false}
+      STUDIO_LLM_API_KEY: ${STUDIO_LLM_API_KEY:-}
+      STUDIO_LLM_BASE_URL: ${STUDIO_LLM_BASE_URL:-}
+      STUDIO_LLM_MODEL: ${STUDIO_LLM_MODEL:-}
+    volumes:
+      - ledgerly_data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=128m
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+volumes:
+  ledgerly_data:

@@ -1,0 +1,13 @@
+Ledgerly (账序)
+
+Ledgerly is an independent accounting application developed from the concepts
+and local extensions of EasyAccounts. It does not require an EasyAccounts
+server, database, frontend build or AI service to run.
+
+EasyAccounts upstream: https://github.com/QingHeYang/EasyAccounts
+Development starting point: https://github.com/goldenfishs/EasyAccounts
+Upstream license: MIT, Copyright (c) 2024 Mercy
+The original copyright notice and MIT license are preserved in LICENSE.
+
+Ledgerly additions: Copyright (c) 2026 Ledgerly contributors.
+Third-party frontend and Python libraries retain their respective licenses.

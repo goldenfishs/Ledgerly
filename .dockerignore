@@ -1,0 +1,18 @@
+# Only application code and dependency manifests enter the build context.
+*
+!Dockerfile
+!requirements.txt
+!backend/
+!backend/**
+!frontend/
+!frontend/**
+frontend/node_modules/
+frontend/dist/
+**/__pycache__/
+**/*.py[cod]
+**/.env
+**/.env.*
+**/*.sqlite*
+**/system.key
+**/.DS_Store
+**/*.log

@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+      STUDIO_DATA_DIR: /tmp/ledgerly-ci-data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - name: Install backend and test dependencies
+        run: python -m pip install -r requirements-dev.txt
+      - name: Run isolated backend tests
+        run: python -m pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend --no-audit --no-fund
+      - name: Run frontend request isolation tests
+        run: node --test tests/test_frontend.mjs
+      - name: Check formatting
+        run: npm run format:check --prefix frontend
+      - name: Build frontend
+        run: npm run build --prefix frontend
+
+  container:
+    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate Compose configuration
+        run: docker compose config --quiet
+      - name: Build the standalone application image
+        run: docker build --tag ledgerly:ci .
+      - name: Start without network access or persistent data
+        run: >-
+          docker run --detach --rm --name ledgerly-ci
+          --network none --read-only
+          --tmpfs /tmp:rw,nosuid,nodev
+          --tmpfs /app/data:rw,nosuid,nodev,uid=10001,gid=10001,mode=0700
+          --cap-drop ALL --security-opt no-new-privileges:true
+          ledgerly:ci
+      - name: Check health, default policy, and bundled frontend
+        run: |
+          docker exec -i ledgerly-ci python - <<'PY'
+          import json
+          import re
+          import time
+          import urllib.error
+          import urllib.request
+
+          origin = "http://127.0.0.1:8000"
+          for attempt in range(30):
+              try:
+                  with urllib.request.urlopen(origin + "/api/health", timeout=2) as response:
+                      assert json.load(response)["data"]["status"] == "ok"
+                  break
+              except (OSError, urllib.error.URLError):
+                  if attempt == 29:
+                      raise
+                  time.sleep(2)
+
+          with urllib.request.urlopen(origin + "/api/auth/options", timeout=2) as response:
+              options = json.load(response)["data"]
+              assert options["registrationMode"] == "invite"
+              assert options["emailEnabled"] is False
+          with urllib.request.urlopen(origin + "/", timeout=2) as response:
+              html = response.read().decode("utf-8")
+              assert "<html" in html
+          scripts = re.findall(r'<script[^>]+src="([^"]+)"', html)
+          assert scripts, "The frontend must be bundled into the image"
+          for script in scripts:
+              assert script.startswith("/assets/")
+              with urllib.request.urlopen(origin + script, timeout=2) as response:
+                  assert response.status == 200
+          print("Health, registration defaults, and bundled frontend verified")
+          PY
+      - name: Show container logs if verification failed
+        if: failure()
+        run: docker logs ledgerly-ci || true
+      - name: Remove temporary container
+        if: always()
+        run: docker rm --force ledgerly-ci || true

@@ -1,0 +1,1183 @@
+/* The shared light palette also applies to dialogs teleported outside the shell. */
+:root {
+  --blue: #7863db;
+  --primary: #7863db;
+  --green: #279d80;
+  --red: #db846d;
+  --muted: #77788c;
+  --text-muted: #77788c;
+  --border: #ececf3;
+  --bg: #f7f8fc;
+  --sidebar: 228px;
+  --mint: #e8f6ef;
+  --peach: #fff0e6;
+  --lilac: #efebfc;
+  --butter: #fff7db;
+}
+body.ledgerly-light {
+  background: var(--bg);
+  color: #3b3b50;
+  letter-spacing: 0.05px;
+}
+body.ledgerly-light .sidebar > nav {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #e5dfee transparent;
+}
+body.ledgerly-light .sidebar > .brand,
+body.ledgerly-light .sidebar > .ledger-selector,
+body.ledgerly-light .sidebar-bottom {
+  flex-shrink: 0;
+}
+body.ledgerly-light .btn,
+body.ledgerly-light .iv-button {
+  border-radius: 10px;
+  font-size: 13px;
+  min-height: 39px;
+}
+body.ledgerly-light .btn-primary,
+body.ledgerly-light .iv-primary {
+  background: #7863db;
+  border-color: #7863db;
+  box-shadow: 0 3px 8px #7863db15;
+  color: #fff;
+}
+body.ledgerly-light .btn-primary:hover,
+body.ledgerly-light .iv-primary:hover {
+  background: #6b55cc;
+  border-color: #6b55cc;
+}
+body.ledgerly-light .btn-secondary {
+  border-color: #e9e7ef;
+  background: white;
+  color: #797487;
+}
+body.ledgerly-light input:focus,
+body.ledgerly-light select:focus,
+body.ledgerly-light textarea:focus {
+  border-color: #ae9bed;
+  box-shadow: 0 0 0 3px #7863db0d;
+}
+body.ledgerly-light input[type="checkbox"] {
+  accent-color: #7863db;
+}
+body.ledgerly-light .sidebar {
+  background: #fff;
+  border-right: 1px solid #efedf5;
+  padding: 28px 17px 0;
+  color: #817d91;
+  z-index: 40;
+}
+body.ledgerly-light .brand {
+  padding: 0 10px;
+  gap: 11px;
+}
+body.ledgerly-light .brand-symbol {
+  background: #8270df;
+  border-radius: 12px;
+  width: 39px;
+  height: 39px;
+  box-shadow: 0 4px 12px #7968cf1a;
+}
+body.ledgerly-light .brand strong {
+  color: #454057;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: 1px;
+}
+body.ledgerly-light .brand strong span {
+  font-size: 10px;
+  color: #aba4bc;
+  letter-spacing: 0.3px;
+}
+body.ledgerly-light .brand small {
+  font-size: 10px;
+  color: #b5afc3;
+  letter-spacing: 0.5px;
+  margin-top: 5px;
+}
+body.ledgerly-light .sidebar > .sidebar-brand {
+  min-height: 40px;
+  padding: 0 10px;
+  gap: 10px;
+  white-space: nowrap;
+}
+body.ledgerly-light .sidebar-brand-mark {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #7863c7;
+  background: #f3f0fc;
+  border: 1px solid #ece6f8;
+  border-radius: 9px;
+}
+body.ledgerly-light .sidebar-brand-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #484254;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+body.ledgerly-light .sidebar-brand-english {
+  flex-shrink: 0;
+  margin-left: 1px;
+  color: #96909f;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.2px;
+}
+body.ledgerly-light .sidebar-brand:focus-visible {
+  outline: 2px solid #c8bcea;
+  outline-offset: 5px;
+  border-radius: 5px;
+}
+body.ledgerly-light .workspace-switch {
+  margin: 27px 0 23px;
+  border: 1px solid #eeeaf7;
+  background: #faf9fd;
+  width: 100%;
+  text-align: left;
+  padding: 12px 10px;
+  gap: 9px;
+  border-radius: 11px;
+  min-width: 0;
+  color: #b3a9c6;
+  position: relative;
+}
+body.ledgerly-light .workspace-switch .org-icon {
+  border-radius: 9px;
+  padding: 9px;
+  display: flex;
+}
+body.ledgerly-light .selected-book-text {
+  flex: 1;
+  min-width: 0;
+}
+body.ledgerly-light .workspace-switch strong {
+  font-size: 12px;
+  font-weight: 550;
+  color: #645971;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+body.ledgerly-light .workspace-switch small {
+  font-size: 10px;
+  color: #aba2b8;
+  margin-top: 5px;
+}
+body.ledgerly-light .workspace-switch > svg {
+  flex-shrink: 0;
+}
+.ledger-selector {
+  position: relative;
+}
+.ledger-menu-scrim {
+  position: fixed;
+  inset: 0;
+  background: transparent;
+  border: 0;
+  z-index: 43;
+  cursor: default;
+}
+.ledger-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% - 16px);
+  width: 282px;
+  max-width: calc(100vw - 28px);
+  z-index: 44;
+  padding: 9px;
+  background: #fff;
+  border: 1px solid #e9e5f0;
+  border-radius: 15px;
+  box-shadow: 0 12px 46px #3f28551f;
+}
+.ledger-menu > p {
+  font-size: 10px;
+  color: #b1a7bd;
+  padding: 5px 10px;
+  margin: 0 0 4px;
+}
+.ledger-menu > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 11px 9px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  text-align: left;
+  color: #786a8b;
+}
+.ledger-menu > button:hover,
+.ledger-menu > button.selected {
+  background: #f6f3ff;
+}
+.ledger-menu > button > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.ledger-menu small {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #b3a6c4;
+}
+.ledger-menu-icon {
+  width: 33px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.ledger-menu-manage {
+  border-top: 1px solid #f2edf7;
+  margin-top: 6px;
+  padding: 14px 10px 7px;
+  color: #8c74c2;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ledger-menu-manage > svg:last-child {
+  margin-left: auto;
+}
+.ledger-menu-empty {
+  padding: 20px 10px;
+  color: #b3a9bf;
+  font-size: 12px;
+  text-align: center;
+}
+body.ledgerly-light .nav-group {
+  margin-bottom: 24px;
+}
+body.ledgerly-light .nav-group > p {
+  color: #bfb9cb;
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding-left: 14px;
+  margin-bottom: 9px;
+}
+body.ledgerly-light .nav-item {
+  height: 43px;
+  color: #82738e;
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 0 14px;
+  gap: 12px;
+  margin: 4px 0;
+}
+body.ledgerly-light .nav-item:hover {
+  background: #f8f6fc;
+  color: #8772b6;
+}
+body.ledgerly-light .nav-item.active {
+  background: #eee9fc;
+  color: #8264c9;
+  font-weight: 550;
+}
+body.ledgerly-light .nav-item svg {
+  color: #aaa0bc;
+}
+body.ledgerly-light .nav-item.active svg {
+  color: #9b80d8;
+}
+body.ledgerly-light .nav-item[href="/accounts"] > svg {
+  color: #c4ab6f;
+}
+body.ledgerly-light .nav-item[href="/invoices"] > svg {
+  color: #d49c8d;
+}
+body.ledgerly-light .nav-item[href="/analysis"] > svg {
+  color: #88b5ab;
+}
+body.ledgerly-light .nav-item[href="/team"] > svg {
+  color: #aca0ce;
+}
+body.ledgerly-light .nav-indicator {
+  width: 5px;
+  height: 5px;
+  background: #a894dc;
+}
+body.ledgerly-light .profile-row {
+  background: #fff;
+  border-top: 1px solid #f0edf5;
+  padding: 19px 21px;
+  color: #b1a7c0;
+  width: calc(100% + 34px);
+  margin-left: -17px;
+}
+body.ledgerly-light .profile-row .avatar,
+body.ledgerly-light .avatar {
+  background: #f0ecfb;
+  border: 0;
+  color: #9b83cc;
+}
+body.ledgerly-light .profile-open {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  text-align: left;
+}
+body.ledgerly-light .profile-open > span:last-child {
+  min-width: 0;
+}
+body.ledgerly-light .profile-open strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.ledgerly-light .profile-logout {
+  flex-shrink: 0;
+  width: 28px;
+}
+body.ledgerly-light .avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+body.ledgerly-light .profile-row strong {
+  font-size: 12px;
+  color: #807287;
+}
+body.ledgerly-light .profile-row small {
+  font-size: 10px;
+  color: #b6aabd;
+}
+.sidebar-note {
+  margin: 0 9px 17px;
+  padding: 17px;
+  background: #f8f6fb;
+  border-radius: 11px;
+}
+.sidebar-note p {
+  font-size: 11px;
+  color: #ac9db6;
+  margin: 11px 0 0;
+  line-height: 1.9;
+}
+.sidebar-note p span {
+  font-size: 10px;
+  color: #c2b8ca;
+}
+.note-dots {
+  display: flex;
+  gap: 5px;
+}
+.note-dots i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #c9b4eb;
+}
+.note-dots i:nth-child(2) {
+  background: #b2d8c8;
+}
+.note-dots i:nth-child(3) {
+  background: #eac5ad;
+}
+body.ledgerly-light .topbar {
+  height: 69px;
+  padding: 0 34px;
+  border-bottom: 1px solid #eeecf4;
+  background: #ffffffcc;
+  backdrop-filter: blur(12px);
+}
+body.ledgerly-light .breadcrumbs {
+  color: #b2aabc;
+  font-size: 11px;
+  min-width: 0;
+}
+body.ledgerly-light .breadcrumbs > span {
+  max-width: 230px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.ledgerly-light .breadcrumbs strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: #877a98;
+}
+body.ledgerly-light .top-actions {
+  gap: 20px;
+}
+body.ledgerly-light .top-actions .btn {
+  min-height: 34px;
+  border-radius: 9px;
+  font-size: 12px;
+}
+body.ledgerly-light .secure-chip {
+  font-size: 10px;
+  color: #b2a7bd;
+}
+body.ledgerly-light .page-body {
+  padding: 32px 34px 25px;
+  max-width: 1550px;
+}
+body.ledgerly-light .page-body h1 {
+  font-size: 27px;
+  color: #474053;
+  letter-spacing: 0.2px;
+  font-weight: 650;
+  line-height: 1.35;
+  margin-bottom: 9px;
+}
+body.ledgerly-light .page-body h1 > span:not(.greeting-dot) {
+  display: none;
+}
+body.ledgerly-light .page-body .page-header {
+  margin-bottom: 25px;
+}
+body.ledgerly-light .page-body .page-header p {
+  font-size: 12px;
+  color: #9788a2;
+  line-height: 1.8;
+}
+body.ledgerly-light .page-eyebrow,
+body.ledgerly-light .flow-eyebrow,
+body.ledgerly-light .analysis-eyebrow,
+body.ledgerly-light .iv-eyebrow,
+body.ledgerly-light .st-eyebrow,
+body.ledgerly-light .au-eyebrow {
+  display: none;
+}
+body.ledgerly-light .page-body .card,
+body.ledgerly-light .ledger-card,
+body.ledgerly-light .iv-records,
+body.ledgerly-light .trend-panel,
+body.ledgerly-light .category-panel,
+body.ledgerly-light .breakdown-panel {
+  background: #fff;
+  border-color: #eeedf5;
+  box-shadow: none;
+  border-radius: 16px;
+}
+body.ledgerly-light .card-head h2,
+body.ledgerly-light .chart-header h2 {
+  font-size: 15px;
+  color: #81718e;
+  font-weight: 550;
+}
+body.ledgerly-light .card-head p,
+body.ledgerly-light .chart-header p {
+  color: #a194aa;
+  font-size: 11px;
+}
+body.ledgerly-light .card-head {
+  padding: 23px 24px 0;
+}
+body.ledgerly-light .metrics-grid {
+  gap: 17px;
+}
+body.ledgerly-light .metrics-grid .metric {
+  padding: 23px;
+  border: 0;
+  border-radius: 15px;
+  position: relative;
+  overflow: hidden;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 1) {
+  background: #e8f5ed;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 2) {
+  background: #fff0e7;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 3) {
+  background: #eeebfb;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 4) {
+  background: #fff7db;
+}
+body.ledgerly-light .metric-top {
+  color: #8d91a0;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+body.ledgerly-light .metric-value {
+  color: #555168;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.6px;
+}
+body.ledgerly-light .metric-value small {
+  color: #a9a1b1;
+  font-size: 15px;
+}
+body.ledgerly-light .metric-icon {
+  background: #ffffff80;
+  border-radius: 9px;
+  opacity: 0.8;
+}
+body.ledgerly-light .metric-foot {
+  font-size: 10px;
+  color: #aea2b0;
+  margin-top: 13px;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 1) .metric-top,
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 1) .metric-value {
+  color: #397b60;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 2) .metric-top,
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 2) .metric-value {
+  color: #a16a52;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 3) .metric-top,
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 3) .metric-value {
+  color: #776096;
+}
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 4) .metric-top,
+body.ledgerly-light .metrics-grid .metric:nth-child(4n + 4) .metric-value {
+  color: #8d762f;
+}
+body.ledgerly-light .notice-banner {
+  border: 0;
+  background: #f0ecfa;
+  color: #a297b7;
+  border-radius: 12px;
+  font-size: 12px;
+  padding: 15px 18px;
+}
+body.ledgerly-light .notice-banner strong {
+  color: #927bb7;
+}
+body.ledgerly-light .notice-banner .link-btn {
+  color: #9477c0;
+  font-size: 11px;
+}
+body.ledgerly-light .pending-banner {
+  background: #fff7e4;
+  border: 0;
+  border-radius: 12px;
+  padding: 15px 19px;
+}
+body.ledgerly-light .pending-banner strong {
+  color: #b1a06e;
+  font-size: 12px;
+}
+body.ledgerly-light .pending-banner p {
+  font-size: 11px;
+  color: #c0b493;
+}
+body.ledgerly-light .pending-icon {
+  background: #f5eacc;
+  color: #c1b074;
+}
+body.ledgerly-light .pending-banner > button {
+  font-size: 11px;
+  color: #b3a270;
+}
+body.ledgerly-light .month-overview {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  padding: 0;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+body.ledgerly-light .month-control {
+  background: #fff;
+  border: 1px solid #eeedf5;
+  border-radius: 15px;
+  padding: 22px;
+}
+body.ledgerly-light .month-stat {
+  padding: 22px;
+  border: 0;
+  border-radius: 15px;
+  gap: 12px;
+  min-height: 140px;
+}
+body.ledgerly-light .month-stat.income,
+body.ledgerly-light .month-stat:nth-child(2) {
+  background: #e8f5ed;
+}
+body.ledgerly-light .month-stat.expense,
+body.ledgerly-light .month-stat:nth-child(3) {
+  background: #fff0e7;
+}
+body.ledgerly-light .month-stat.net,
+body.ledgerly-light .month-stat:nth-child(4) {
+  background: #eeebfb;
+}
+body.ledgerly-light .month-stat > span {
+  font-size: 12px;
+  color: #9a8eac;
+}
+body.ledgerly-light .month-stat strong {
+  font-size: 27px;
+  color: #7f738f;
+}
+body.ledgerly-light .month-stat > small {
+  font-size: 10px;
+  color: #b2a4bb;
+}
+body.ledgerly-light .month-stat:nth-child(2) strong {
+  color: #4d8a6a;
+}
+body.ledgerly-light .month-stat:nth-child(3) strong {
+  color: #ad775b;
+}
+body.ledgerly-light .month-stat:nth-child(4) strong {
+  color: #8366a4;
+}
+body.ledgerly-light .flow-tabs > button {
+  font-size: 13px;
+  color: #9788a2;
+  padding: 19px 0;
+}
+body.ledgerly-light .flow-tabs > button.active {
+  color: #9a7dce;
+}
+body.ledgerly-light .flow-tabs > button.active:after {
+  background: #b79bdd;
+  height: 3px;
+  border-radius: 3px;
+}
+body.ledgerly-light .search-input {
+  background: #faf9fc;
+  border-color: #efedf5;
+  border-radius: 9px;
+  padding: 10px 12px;
+}
+body.ledgerly-light .search-input input,
+body.ledgerly-light .filter-select select {
+  font-size: 12px;
+  color: #92839d;
+}
+body.ledgerly-light .search-input input::placeholder {
+  color: #bdb2c8;
+}
+body.ledgerly-light .filter-select,
+body.ledgerly-light .collection-filter {
+  border-color: #eeeaf3;
+  border-radius: 9px;
+  height: 39px;
+  color: #b1a5bd;
+  font-size: 11px;
+}
+body.ledgerly-light table th {
+  background: #faf9fd;
+  color: #9a8dab;
+  font-size: 11px;
+  border-color: #f0edf5;
+}
+body.ledgerly-light table td {
+  border-color: #f3f0f7;
+  color: #7b6e87;
+  font-size: 12px;
+}
+body.ledgerly-light .table-main,
+body.ledgerly-light .category-name {
+  color: #897797;
+}
+body.ledgerly-light .flow-name {
+  color: #8e779e;
+  font-size: 13px;
+}
+body.ledgerly-light .flow-note {
+  font-size: 11px;
+  color: #b7a9c3;
+}
+body.ledgerly-light .desktop-table tbody tr:hover {
+  background: #fdfbff;
+}
+body.ledgerly-light .row-amount.income,
+body.ledgerly-light .text-green {
+  color: #4c9876;
+}
+body.ledgerly-light .row-amount.expense,
+body.ledgerly-light .text-red {
+  color: #bf8465;
+}
+body.ledgerly-light .report-summary .summary-card {
+  border: 0;
+  border-radius: 15px;
+  padding: 23px;
+  background: #eeebfb;
+}
+body.ledgerly-light .report-summary .summary-card:nth-child(1) {
+  background: #e8f5ed;
+}
+body.ledgerly-light .report-summary .summary-card:nth-child(2) {
+  background: #fff0e7;
+}
+body.ledgerly-light .report-summary .summary-card:nth-child(4) {
+  background: #fff7db;
+}
+body.ledgerly-light .summary-card > div {
+  font-size: 12px;
+  color: #8a789f;
+}
+body.ledgerly-light .summary-card > strong {
+  color: #9781b8;
+  font-size: 28px;
+}
+body.ledgerly-light .summary-card:nth-child(1) > strong {
+  color: #4d876a;
+}
+body.ledgerly-light .summary-card:nth-child(2) > strong {
+  color: #a9745a;
+}
+body.ledgerly-light .summary-card:nth-child(4) > strong {
+  color: #9c833e;
+}
+body.ledgerly-light .summary-card p {
+  font-size: 10px;
+  color: #b2a4bb;
+}
+body.ledgerly-light .summary-icon {
+  background: #ffffff80;
+}
+body.ledgerly-light .iv-stat {
+  border: 0;
+  border-radius: 15px;
+  background: #eeebfb;
+}
+body.ledgerly-light .iv-stat:nth-child(2) {
+  background: #e8f5ed;
+}
+body.ledgerly-light .iv-stat:nth-child(3) {
+  background: #fff0e7;
+}
+body.ledgerly-light .iv-stat:nth-child(4) {
+  background: #fff7db;
+}
+body.ledgerly-light .iv-stat strong {
+  color: #826a9f;
+}
+body.ledgerly-light .iv-stat:nth-child(2) strong {
+  color: #4f8c6c;
+}
+body.ledgerly-light .iv-stat:nth-child(3) strong {
+  color: #b37a5b;
+}
+body.ledgerly-light .iv-stat:nth-child(4) strong {
+  color: #927a3b;
+}
+body.ledgerly-light .iv-drop {
+  background: #faf9ff;
+  border-color: #ded4ef;
+  border-radius: 16px;
+}
+body.ledgerly-light .iv-tabs button.active {
+  color: #a183cd;
+}
+body.ledgerly-light .iv-tabs button.active:after {
+  background: #bfa7dd;
+}
+body.ledgerly-light .iv-button {
+  font-size: 12px;
+}
+body.ledgerly-light .account-card {
+  border: 0;
+  background: #f0ecfa;
+}
+body.ledgerly-light .account-card:nth-child(3n + 2) {
+  background: #e8f5ee;
+}
+body.ledgerly-light .account-card:nth-child(3n + 3) {
+  background: #fff3e6;
+}
+body.ledgerly-light .account-card .account-symbol {
+  background: #ffffffa8;
+  color: #ab93d0;
+}
+body.ledgerly-light .account-card h3 {
+  color: #8e789f;
+  font-size: 15px;
+}
+body.ledgerly-light .account-card .account-balance {
+  color: #9481a3;
+}
+body.ledgerly-light .account-card .account-foot {
+  border-color: #ffffffaa;
+  color: #b1a0c1;
+}
+body.ledgerly-light .flow-editor,
+body.ledgerly-light .action-dialog,
+body.ledgerly-light .iv-drawer {
+  background: #fff;
+  box-shadow: 0 24px 90px #62507422;
+}
+body.ledgerly-light .flow-editor .direction-tabs,
+body.ledgerly-light .direction-tabs {
+  background: #f7f4fb;
+}
+body.ledgerly-light .flow-editor .direction-tabs button.active {
+  background: #fff;
+  color: #a68bc7;
+}
+body.ledgerly-light .editor-footer {
+  background: #faf8fd;
+}
+body.ledgerly-light .editor-heading {
+  border-color: #f1ecf6;
+}
+body.ledgerly-light .submit-note {
+  color: #b3a5bf;
+}
+body.ledgerly-light .card-content,
+body.ledgerly-light .quick-list {
+  color: #9f8bac;
+}
+body.ledgerly-light .quick-icon {
+  background: #f1ebfb;
+  color: #b59ad5;
+}
+body.ledgerly-light .quick-icon.green {
+  background: #eaf7ef;
+  color: #a5c7b1;
+}
+body.ledgerly-light .quick-icon.purple {
+  background: #fff1eb;
+  color: #d6ae99;
+}
+body.ledgerly-light .quick-link strong {
+  color: #887092;
+  font-size: 13px;
+}
+body.ledgerly-light .quick-link p {
+  font-size: 11px;
+  color: #baa9c5;
+}
+body.ledgerly-light .quick-link {
+  border-color: #f4eef8;
+}
+body.ledgerly-light .app-footer {
+  padding: 15px 34px 22px;
+  color: #c8bfd2;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+body.ledgerly-light .login-page {
+  background: #fcfbff;
+}
+body.ledgerly-light .login-story {
+  background: #f0ecfc;
+  color: #78628f;
+}
+body.ledgerly-light .login-story h1 {
+  color: #9780b5;
+}
+body.ledgerly-light .login-story h1 span {
+  color: #bd9dd3;
+}
+body.ledgerly-light .login-story p {
+  color: #b5a1c9;
+}
+body.ledgerly-light .login-story .brand strong {
+  color: #947aa9;
+}
+body.ledgerly-light .login-story .brand small,
+body.ledgerly-light .login-story-footer {
+  color: #c4b3d2;
+}
+body.ledgerly-light .login-tags {
+  color: #bba4cc;
+}
+body.ledgerly-light .login-preview {
+  border-color: #e5daf3;
+  background: #ffffff55;
+  transform: none;
+  box-shadow: none;
+}
+body.ledgerly-light .login-preview-head {
+  color: #baa4cf;
+}
+body.ledgerly-light .preview-chart i {
+  background: #cbb7e2;
+}
+body.ledgerly-light .preview-chart i:nth-child(3n + 2) {
+  background: #bcdac8;
+}
+body.ledgerly-light .preview-chart i:nth-child(3n + 3) {
+  background: #ecd1bb;
+}
+body.ledgerly-light .login-form-side {
+  background: linear-gradient(140deg, #fff, #fcfbff);
+}
+body.ledgerly-light .login-form h2 {
+  color: #93809f;
+}
+body.ledgerly-light .login-form > .muted {
+  color: #baacc5;
+}
+/* Keep the soft surfaces separate from readable working text. */
+body.ledgerly-light .nav-item {
+  color: #766a83;
+}
+body.ledgerly-light .nav-group > p {
+  color: #94889f;
+}
+body.ledgerly-light .workspace-switch strong {
+  color: #60546e;
+}
+body.ledgerly-light .workspace-switch small {
+  color: #8b7d99;
+}
+body.ledgerly-light .profile-row strong {
+  color: #756780;
+}
+body.ledgerly-light .profile-row small {
+  color: #96869f;
+}
+body.ledgerly-light .page-body .page-header p,
+body.ledgerly-light .card-head p,
+body.ledgerly-light .chart-header p {
+  color: #84768f;
+  font-size: 12px;
+}
+body.ledgerly-light .metric-foot,
+body.ledgerly-light .month-stat > small,
+body.ledgerly-light .summary-card p {
+  color: #897d92;
+  font-size: 11px;
+}
+body.ledgerly-light .metric-value small {
+  color: inherit;
+  opacity: 0.7;
+}
+body.ledgerly-light .month-stat > span {
+  color: #81728d;
+}
+body.ledgerly-light .notice-banner {
+  color: #7b6b92;
+}
+body.ledgerly-light .notice-banner strong {
+  color: #775c9e;
+}
+body.ledgerly-light .pending-banner strong {
+  color: #8d783e;
+}
+body.ledgerly-light .pending-banner p {
+  color: #a08b55;
+}
+body.ledgerly-light .pending-banner > button {
+  color: #8e7742;
+}
+body.ledgerly-light table th {
+  color: #8b7b9b;
+  font-size: 12px;
+}
+body.ledgerly-light .table-main,
+body.ledgerly-light .category-name,
+body.ledgerly-light .flow-name {
+  color: #756080;
+}
+body.ledgerly-light .flow-note {
+  color: #92829f;
+  font-size: 12px;
+}
+body.ledgerly-light .search-input input,
+body.ledgerly-light .filter-select select {
+  color: #7d6d8a;
+}
+body.ledgerly-light .quick-link strong {
+  color: #786184;
+}
+body.ledgerly-light .quick-link p {
+  color: #91809d;
+  font-size: 12px;
+}
+body.ledgerly-light .account-card h3 {
+  color: #715981;
+}
+body.ledgerly-light .account-card .account-balance {
+  color: #715b80;
+}
+body.ledgerly-light .account-card .account-foot {
+  color: #8c769e;
+}
+body.ledgerly-light .login-story h1 {
+  color: #715887;
+}
+body.ledgerly-light .login-story h1 span {
+  color: #9472b0;
+}
+body.ledgerly-light .login-story p {
+  color: #8d769f;
+}
+body.ledgerly-light .login-form h2 {
+  color: #6c557c;
+}
+body.ledgerly-light .login-form > .muted {
+  color: #92819f;
+}
+@media (max-width: 1200px) {
+  body.ledgerly-light .page-body {
+    padding: 27px 25px;
+  }
+  body.ledgerly-light .topbar {
+    padding: 0 25px;
+  }
+  body.ledgerly-light .month-overview {
+    gap: 12px;
+  }
+  body.ledgerly-light .month-control,
+  body.ledgerly-light .month-stat {
+    padding: 18px;
+  }
+  body.ledgerly-light .month-stat strong {
+    font-size: 23px;
+  }
+  body.ledgerly-light .metric-value {
+    font-size: 25px;
+  }
+}
+@media (max-height: 850px) and (min-width: 761px) {
+  body.ledgerly-light .sidebar-note {
+    display: none;
+  }
+  body.ledgerly-light .nav-group {
+    margin-bottom: 17px;
+  }
+  body.ledgerly-light .nav-item {
+    height: 39px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  body.ledgerly-light .month-overview {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 760px) {
+  body.ledgerly-light .sidebar {
+    padding-top: 24px;
+  }
+  body.ledgerly-light .topbar {
+    height: 63px;
+    padding: 0 17px;
+  }
+  body.ledgerly-light .page-body {
+    padding: 23px 17px;
+  }
+  body.ledgerly-light .page-body h1 {
+    font-size: 24px;
+  }
+  body.ledgerly-light .page-body .page-header p {
+    font-size: 11px;
+  }
+  body.ledgerly-light .page-body .page-header {
+    margin-bottom: 22px;
+  }
+  body.ledgerly-light .metrics-grid {
+    gap: 11px;
+  }
+  body.ledgerly-light .metrics-grid .metric {
+    padding: 17px 15px;
+  }
+  body.ledgerly-light .metric-top {
+    font-size: 11px;
+  }
+  body.ledgerly-light .metric-value {
+    font-size: 23px;
+  }
+  body.ledgerly-light .metric-foot {
+    font-size: 9px;
+  }
+  body.ledgerly-light .month-overview {
+    gap: 11px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  body.ledgerly-light .month-control,
+  body.ledgerly-light .month-stat {
+    min-height: 125px;
+    padding: 17px 15px;
+  }
+  body.ledgerly-light .month-stat {
+    gap: 8px;
+  }
+  body.ledgerly-light .month-stat strong {
+    font-size: 24px;
+  }
+  body.ledgerly-light .month-stat > span {
+    font-size: 11px;
+  }
+  body.ledgerly-light .month-stat > small {
+    font-size: 9px;
+  }
+  body.ledgerly-light .flow-tabs > button {
+    font-size: 11px;
+    padding: 17px 0;
+  }
+  body.ledgerly-light .filter-select select,
+  body.ledgerly-light .search-input input {
+    font-size: 11px;
+  }
+  body.ledgerly-light .pending-banner {
+    padding: 13px;
+  }
+  body.ledgerly-light .pending-banner strong {
+    font-size: 11px;
+  }
+  body.ledgerly-light .pending-banner p {
+    font-size: 10px;
+  }
+  body.ledgerly-light .pending-banner > button {
+    font-size: 10px;
+  }
+  body.ledgerly-light .report-summary .summary-card {
+    padding: 17px 15px;
+  }
+  body.ledgerly-light .summary-card > strong {
+    font-size: 23px;
+  }
+  body.ledgerly-light .summary-card > div {
+    font-size: 11px;
+  }
+  body.ledgerly-light .summary-card p {
+    font-size: 9px;
+  }
+  body.ledgerly-light .sidebar-note {
+    display: none;
+  }
+  body.ledgerly-light .app-footer {
+    padding: 15px 17px;
+    font-size: 9px;
+  }
+  body.ledgerly-light .top-actions {
+    gap: 12px;
+  }
+  body.ledgerly-light .notice-banner {
+    font-size: 11px;
+  }
+  body.ledgerly-light .account-card .account-balance {
+    font-size: 25px;
+  }
+  body.ledgerly-light .login-story h1 {
+    font-size: 23px;
+  }
+  .ledger-menu {
+    width: 270px;
+  }
+  body.ledgerly-light .card-head h2,
+  body.ledgerly-light .chart-header h2 {
+    font-size: 14px;
+  }
+}
