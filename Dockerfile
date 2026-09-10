@@ -1,5 +1,6 @@
 ARG NODE_BASE_IMAGE=node:22-alpine
 ARG PYTHON_BASE_IMAGE=python:3.12-slim
+ARG LEDGERLY_VERSION=0.1.0
 
 FROM ${NODE_BASE_IMAGE} AS frontend-build
 WORKDIR /build/frontend
@@ -9,13 +10,16 @@ COPY frontend/ ./
 RUN npm run build
 
 FROM ${PYTHON_BASE_IMAGE} AS runtime
+LABEL org.opencontainers.image.source="https://github.com/goldenfishs/Ledgerly"
+LABEL org.opencontainers.image.title="Ledgerly"
 USER root
 ENTRYPOINT []
 WORKDIR /app
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     STUDIO_DATA_DIR=/app/data \
-    STUDIO_WEB_DIR=/app/web
+    STUDIO_WEB_DIR=/app/web \
+    LEDGERLY_VERSION=${LEDGERLY_VERSION}
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir --disable-pip-version-check -r requirements.txt \
     && groupadd --gid 10001 ledgerly \

@@ -14,7 +14,7 @@ docker compose ps
 
 首次访问 [http://localhost:10670](http://localhost:10670) 创建系统管理员。构建过程需要下载 Node.js、Python 基础镜像及依赖；运行普通记账功能无需 AI 或 SMTP 服务。
 
-默认 Compose 项目名为 `ledgerly`，服务名为 `ledgerly`。数据卷键为 `ledgerly_data`，默认完整卷名为 `ledgerly_ledgerly_data`；自定义 Compose 项目名会影响实际卷名。容器内数据目录为 `/app/data`，前端目录为 `/app/web`。
+默认 Compose 项目名为 `ledgerly`，服务名为 `ledgerly`。镜像默认使用 `ghcr.io/goldenfishs/ledgerly:latest`，首次启动配合 `--build` 会在本机构建同名标签；已有发布镜像时可直接拉取。数据卷键为 `ledgerly_data`，默认完整卷名为 `ledgerly_ledgerly_data`；自定义 Compose 项目名会影响实际卷名。容器内数据目录为 `/app/data`，前端目录为 `/app/web`。
 
 常用命令：
 
@@ -109,6 +109,8 @@ docker compose ps
 检查健康状态、登录、账本列表及一条既有流水或发票。启动时会执行需要的数据库迁移；容器重建不会主动清空数据卷。
 
 新的镜像包含该版本前端资源。更新前请保存正在编辑的表单，更新后刷新页面，避免浏览器继续请求旧版本延迟加载的资源。
+
+也可以在页面左上角打开版本中心。发现 GitHub Release 后，复制其中的更新命令，在部署主机执行；命令会拉取 `ghcr.io/goldenfishs/ledgerly` 的新镜像并重建服务。版本中心只检查发布信息，不在应用容器内执行 Docker 命令。
 
 不要使用 `docker compose down -v` 作为更新步骤，它会删除 Compose 管理的数据卷。若需要回滚，应使用对应的旧代码或镜像以及升级前的完整数据快照，避免让旧程序继续写入已升级数据库。
 

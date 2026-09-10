@@ -22,6 +22,10 @@ import {
   ArrowUpRight,
   UserRound,
   SlidersHorizontal,
+  RefreshCw,
+  ExternalLink,
+  Copy,
+  X,
 } from "lucide-vue-next";
 import {
   state,
@@ -45,6 +49,10 @@ const menuOpen = ref(false),
   logoutOpen = ref(false);
 const isPublicPage = computed(() => Boolean(route.meta.public));
 const avatarError = ref(false);
+const versionOpen = ref(false);
+const versionLoading = ref(false);
+const versionCopied = ref(false);
+const versionInfo = ref(null);
 const avatarUrl = computed(() => !avatarError.value && state.user?.avatarUrl);
 watch(
   () => state.user?.avatarUrl,
@@ -173,6 +181,40 @@ function openFlow() {
   if (state.activeLedger) editor.value = true;
   else router.push("/ledgers");
 }
+async function checkVersion(force = false) {
+  if (versionLoading.value) return;
+  if (!force && versionInfo.value) return;
+  versionLoading.value = true;
+  try {
+    versionInfo.value = await api("/system/version");
+  } catch {
+    versionInfo.value = {
+      currentVersion: "0.1.0",
+      status: "error",
+      releaseUrl: "https://github.com/goldenfishs/Ledgerly/releases",
+      image: "ghcr.io/goldenfishs/ledgerly",
+      updateCommand:
+        "docker compose pull ledgerly && docker compose up -d --no-deps ledgerly",
+    };
+  } finally {
+    versionLoading.value = false;
+  }
+}
+function toggleVersion() {
+  versionOpen.value = !versionOpen.value;
+  if (versionOpen.value) checkVersion();
+}
+async function copyUpdateCommand() {
+  const command = versionInfo.value?.updateCommand;
+  if (!command) return;
+  try {
+    await navigator.clipboard.writeText(command);
+    versionCopied.value = true;
+    setTimeout(() => (versionCopied.value = false), 2200);
+  } catch {
+    notify("请手动复制更新命令", "error");
+  }
+}
 function saved() {
   editor.value = false;
   bus.dispatchEvent(new Event("ledger-change"));
@@ -225,6 +267,7 @@ function keydown(event) {
   if (event.key === "Escape") {
     ledgerMenu.value = false;
     menuOpen.value = false;
+    versionOpen.value = false;
   }
 }
 onMounted(() => {
@@ -260,20 +303,94 @@ onUnmounted(() => {
   <div v-else class="app-shell">
     <div v-if="menuOpen" class="mobile-scrim" @click="menuOpen = false"></div>
     <aside class="sidebar" :class="{ open: menuOpen }">
-      <RouterLink
-        to="/overview"
-        class="brand sidebar-brand"
-        :aria-label="`${state.siteName}，返回工作台`"
-        :title="state.siteName"
-      >
-        <span class="sidebar-brand-mark" aria-hidden="true">
-          <BookOpen :size="21" :stroke-width="1.8" />
-        </span>
-        <span class="sidebar-brand-name">{{ state.siteName }}</span>
-        <span v-if="state.siteName === '账序'" class="sidebar-brand-english"
-          >Ledgerly</span
+      <div class="brand-version-wrap">
+        <button
+          class="brand sidebar-brand"
+          :aria-label="`${state.siteName}，打开版本中心`"
+          :title="state.siteName"
+          :aria-expanded="versionOpen"
+          @click="toggleVersion"
         >
-      </RouterLink>
+          <span class="sidebar-brand-mark" aria-hidden="true">
+            <BookOpen :size="21" :stroke-width="1.8" />
+          </span>
+          <span class="sidebar-brand-name">{{ state.siteName }}</span>
+          <span v-if="state.siteName === '账序'" class="sidebar-brand-english"
+            >Ledgerly</span
+          >
+        </button>
+        <section
+          v-if="versionOpen"
+          class="version-popover"
+          aria-label="版本中心"
+        >
+          <header>
+            <strong>当前版本</strong>
+            <button
+              class="icon-btn"
+              aria-label="检查新版本"
+              :disabled="versionLoading"
+              @click="checkVersion(true)"
+            >
+              <RefreshCw :size="17" :class="{ spinning: versionLoading }" />
+            </button>
+          </header>
+          <div v-if="versionLoading" class="version-state">正在检查版本…</div>
+          <template v-else-if="versionInfo">
+            <div class="version-current">
+              <strong>v{{ versionInfo.currentVersion }}</strong>
+              <span
+                v-if="versionInfo.status === 'latest'"
+                class="version-check"
+                aria-label="已是最新版本"
+                ><Check :size="14"
+              /></span>
+            </div>
+            <p v-if="versionInfo.status === 'latest'" class="version-message">
+              已是最新版本
+            </p>
+            <p
+              v-else-if="versionInfo.status === 'available'"
+              class="version-message version-update"
+            >
+              新版本 v{{ versionInfo.latestVersion }} 可用
+            </p>
+            <p
+              v-else-if="versionInfo.status === 'unavailable'"
+              class="version-message"
+            >
+              暂无正式发布版本
+            </p>
+            <p v-else class="version-message">暂时无法检查更新</p>
+            <div
+              v-if="versionInfo.status === 'available'"
+              class="version-actions"
+            >
+              <a :href="versionInfo.releaseUrl" target="_blank" rel="noreferrer"
+                >查看发布 <ExternalLink :size="14"
+              /></a>
+              <button class="version-copy" @click="copyUpdateCommand">
+                <Copy :size="14" />{{
+                  versionCopied ? "已复制更新命令" : "复制安装命令"
+                }}
+              </button>
+              <code>{{ versionInfo.updateCommand }}</code>
+              <small
+                >请在部署 Ledgerly 的主机终端执行，应用容器不会直接操作
+                Docker。</small
+              >
+            </div>
+            <a
+              v-else
+              class="version-release-link"
+              :href="versionInfo.releaseUrl"
+              target="_blank"
+              rel="noreferrer"
+              >查看版本发布 <ExternalLink :size="14"
+            /></a>
+          </template>
+        </section>
+      </div>
       <div class="ledger-selector">
         <button
           class="workspace-switch"

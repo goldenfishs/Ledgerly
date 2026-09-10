@@ -75,7 +75,8 @@ Compose 会读取仓库根目录的 `.env`。完整示例见 [`.env.example`](..
 | --- | --- |
 | `LEDGERLY_BIND_HOST` | Compose 对外绑定地址，默认 `127.0.0.1` |
 | `LEDGERLY_PORT` | 宿主机端口，默认 `10670` |
-| `LEDGERLY_IMAGE_TAG` | Compose 构建及使用的本地镜像标签，默认 `local` |
+| `LEDGERLY_IMAGE` | Compose 使用的镜像仓库，默认 `ghcr.io/goldenfishs/ledgerly` |
+| `LEDGERLY_IMAGE_TAG` | Compose 使用的镜像标签，默认 `latest`；本地开发可改为自己的标签 |
 | `LEDGERLY_API_PROXY` | 本地 Vite 开发代理，默认 `http://127.0.0.1:8000`，在启动 npm 的进程环境中设置 |
 | `STUDIO_PUBLIC_ORIGIN` | 公开访问的协议、域名及可选端口；直连时可留空，HTTPS 反向代理时填写实际来源 |
 | `STUDIO_COOKIE_SECURE` | HTTPS 部署设为 `true`，要求浏览器通过安全连接发送登录 Cookie |

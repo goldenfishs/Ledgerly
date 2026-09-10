@@ -14,6 +14,7 @@ from email.message import EmailMessage
 from email.utils import formataddr
 from pathlib import Path
 
+import httpx
 from cryptography.fernet import Fernet, InvalidToken
 from fastapi import APIRouter, Body, Depends, HTTPException, Request
 
@@ -22,6 +23,13 @@ from .core import auth_user, boolean_field, check_fields, get_db, integer_field,
 router = APIRouter(prefix="/api")
 POLICY_DEFAULTS = {"siteName": "账序", "registrationMode": "invite", "emailVerificationRequired": False}
 MAIL_DEFAULTS = {"enabled": False, "host": "", "port": 587, "security": "starttls", "username": "", "fromEmail": "", "fromName": "账序", "passwordEncrypted": ""}
+APP_VERSION = os.getenv("LEDGERLY_VERSION", "0.1.0")
+REPOSITORY_URL = "https://github.com/goldenfishs/Ledgerly"
+CONTAINER_IMAGE = os.getenv("LEDGERLY_IMAGE", "ghcr.io/goldenfishs/ledgerly")
+UPDATE_COMMAND = os.getenv(
+    "LEDGERLY_UPDATE_COMMAND",
+    "docker compose pull ledgerly && docker compose up -d --no-deps ledgerly",
+)
 
 
 class AttemptLimiter:
@@ -87,6 +95,59 @@ def mail_config(db):
 def mail_available(db):
     config = mail_config(db)
     return bool(config["enabled"] and config["host"] and config["fromEmail"])
+
+
+def _version_tuple(value):
+    match = re.fullmatch(r"v?(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:[-+].*)?", str(value or "").strip())
+    return tuple(int(part or 0) for part in match.groups()) if match else None
+
+
+def version_info(app):
+    """Return cached public release metadata without granting Docker access."""
+    now = time.monotonic()
+    cached = getattr(app.state, "version_info", None)
+    if cached and now - cached["checkedMonotonic"] < 300:
+        return {key: value for key, value in cached.items() if key != "checkedMonotonic"}
+    result = {
+        "currentVersion": APP_VERSION,
+        "latestVersion": None,
+        "updateAvailable": False,
+        "releaseUrl": REPOSITORY_URL + "/releases",
+        "releaseNotes": "",
+        "image": CONTAINER_IMAGE,
+        "updateCommand": UPDATE_COMMAND,
+        "status": "checking",
+    }
+    try:
+        response = httpx.get(
+            REPOSITORY_URL.replace("github.com", "api.github.com/repos") + "/releases/latest",
+            headers={"Accept": "application/vnd.github+json", "User-Agent": "Ledgerly-Version-Checker"},
+            timeout=4,
+        )
+        if response.status_code == 200:
+            payload = response.json()
+            tag = str(payload.get("tag_name") or "").strip()
+            latest = _version_tuple(tag)
+            current = _version_tuple(APP_VERSION)
+            if latest:
+                result.update({
+                    "latestVersion": tag.lstrip("v"),
+                    "updateAvailable": bool(current and latest > current),
+                    "releaseUrl": payload.get("html_url") or result["releaseUrl"],
+                    "releaseNotes": str(payload.get("body") or "")[:4000],
+                    "status": "available" if current and latest > current else "latest",
+                })
+            else:
+                result["status"] = "unavailable"
+        elif response.status_code == 404:
+            result["status"] = "unavailable"
+        else:
+            result["status"] = "error"
+    except (httpx.HTTPError, ValueError, TypeError):
+        result["status"] = "error"
+    result["checkedMonotonic"] = now
+    app.state.version_info = result
+    return {key: value for key, value in result.items() if key != "checkedMonotonic"}
 
 
 def public_mail(config):
@@ -199,6 +260,11 @@ def deliver_email(app, config, to, subject, body):
 def auth_options(request: Request):
     with get_db(request) as db:
         return success({**system_config(db), "emailEnabled": mail_available(db)})
+
+
+@router.get("/system/version")
+def get_version(request: Request, user=Depends(auth_user)):
+    return success(version_info(request.app))
 
 
 @router.get("/system/settings")

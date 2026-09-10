@@ -377,3 +377,19 @@ def test_smtp_server_exception_never_leaks_credentials(app, admin, monkeypatch):
     response = admin.post("/api/system/email/test", json={"to": "test@example.test"})
     data(response, 502)
     assert "sensitive" not in response.text and "synthetic-smtp-secret" not in response.text
+
+
+def test_version_center_reports_release_and_safe_update_command(app, admin, monkeypatch):
+    class ReleaseResponse:
+        status_code = 200
+
+        def json(self):
+            return {"tag_name": "v0.2.0", "html_url": "https://github.com/goldenfishs/Ledgerly/releases/tag/v0.2.0", "body": "版本说明"}
+
+    monkeypatch.setattr(system.httpx, "get", lambda *args, **kwargs: ReleaseResponse())
+    result = data(admin.get("/api/system/version"))
+    assert result["currentVersion"] == "0.1.0"
+    assert result["latestVersion"] == "0.2.0"
+    assert result["updateAvailable"] is True
+    assert result["image"] == "ghcr.io/goldenfishs/ledgerly"
+    assert "docker compose pull ledgerly" in result["updateCommand"]
