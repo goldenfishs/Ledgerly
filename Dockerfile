@@ -10,6 +10,7 @@ COPY frontend/ ./
 RUN npm run build
 
 FROM ${PYTHON_BASE_IMAGE} AS runtime
+ARG LEDGERLY_VERSION
 LABEL org.opencontainers.image.source="https://github.com/goldenfishs/Ledgerly"
 LABEL org.opencontainers.image.title="Ledgerly"
 USER root
